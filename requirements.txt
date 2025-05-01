@@ -1,0 +1,6 @@
+numpy
+scipy
+numdifftools
+PyQt5
+matplotlib
+sympy
