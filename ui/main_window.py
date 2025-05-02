@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from PyQt5.QtWidgets import (
-    QMainWindow, QVBoxLayout, QWidget, QPushButton, QLineEdit, QLabel, QHBoxLayout, QCheckBox, QMessageBox
+    QMainWindow, QTextEdit, QVBoxLayout, QWidget, QPushButton, QLineEdit, QLabel, QHBoxLayout, QCheckBox, QMessageBox
 )
 from PyQt5.QtGui import QFont
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -115,6 +115,11 @@ class MainWindow(QMainWindow):
 
         self.layout.addLayout(self.button_layout)
 
+        self.results_box = QTextEdit()
+        self.results_box.setFont(QFont("Courier", 10))
+        self.results_box.setReadOnly(True)
+        self.layout.addWidget(self.results_box)
+        
     def plot_graphs(self):
         function_str = self.function_input.text()
         x_min = self.x_min_input.text()
@@ -153,6 +158,13 @@ class MainWindow(QMainWindow):
             self.figure.patch.set_facecolor("#2b2b2b")
 
             self.canvas.draw()
+            
+            self.results_box.clear()
+            self.results_box.append("x\tFunction\tDerivative\tIntegral")
+            self.results_box.append("-" * 50)
+            for i in range(0, len(x_vals), 50):  # Show every 50th value for readability
+                self.results_box.append(f"{x_vals[i]:.5f}\t{y_vals[i]:.5f}\t{derivative_vals[i]:.5f}\t{integral_vals[i]:.5f}")
+
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {e}")
